@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        form {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            border-radius: 5px; /* Apply border-radius to all buttons */
+            background: #417690; /* Apply background color to all buttons */
+            box-shadow: inset 5px 5px 0px #417690,
+            inset -5px -5px 0px #417690; /* Apply box-shadow to all buttons */
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            color: #ffffff
+        }
+        button:hover {
+            background: #417690;
+            box-shadow: inset 5px 5px 0px #417690,
+            inset -5px -5px 0px #417690;
+        }
+        
+        /* Add the following styles for the button on the top right */
+        .admin-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 5px; /* Apply border-radius to all buttons */
+            background: #417690; /* Apply background color to all buttons */
+            box-shadow: inset 5px 5px 0px #417690,
+            inset -5px -5px 0px #417690;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            color: #ffffff
+        }
+        .admin-button:hover {
+            background: #417690;
+            box-shadow: inset 5px 5px 0px #417690,
+            inset -5px -5px 0px #417690;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="{% url 'admin:index' %}" class="admin-button">Admin</a>
+
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <p>To create a new user, please contact TSA's IT Department</p>
+</body>
+</html>

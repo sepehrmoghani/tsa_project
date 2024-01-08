@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Lookup</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        form {
+            margin: 20px;
+            padding: 50px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #417690;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'connote-compare' %}">Connote Compare</a>
+        <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+        <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+        <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+        <a href="{% url 'StatusLookup' %}" style="background-color: #417690;">Status Lookup</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" style="float: right;">Logout</a>
+        {% endif %}
+    </nav>
+
+    <h2>Status Lookup</h2>
+    <p>Lookup Most Recent Job Status</p>
+    <p>Please ensure your Excel file contains 'ConnoteNumber' column.</p>
+
+    <form id="status-form" method="post" enctype="multipart/form-data" onsubmit="showMessages()">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" placeholder="Username" required><br>
+    
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Password" required><br>
+    
+        <label for="excel_file">Excel File:</label>
+        <input type="file" name="excel_file" accept=".xlsx, .xls" required><br>
+    
+        <input type="checkbox" name="remember_me" id="remember_me">
+        <label for="remember_me">Remember Me</label><br>
+
+    
+        <button type="submit">Upload and Process</button>
+    </form>
+    
+</body>
+</html>

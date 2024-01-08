@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        p {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'connote-compare' %}">Connote Compare</a>
+        <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+        <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+        <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+        <a href="{% url 'StatusLookup' %}">Status Lookup</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" style="float: right;">Logout</a>
+        {% endif %}
+    </nav>
+    <h1>Welcome to your Home Page, {{ user.first_name }}.</h1>
+    <p>Choose an app from the navigation bar above.</p>
+</body>
+
+</html>
