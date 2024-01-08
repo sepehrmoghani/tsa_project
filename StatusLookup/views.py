@@ -12,7 +12,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
-from tkinter import messagebox  # Import messagebox
 import pandas as pd
 import io
 import os
@@ -119,7 +118,7 @@ class StatusLookupView(LoginRequiredMixin, View):
 
             for index, row in df.iterrows():
                 if self.abort_flag:
-                    messagebox.showinfo("Aborting the Operation.")
+                    #messagebox.showinfo("Aborting the Operation.")
                     break
 
                 consignment_number = row['ConnoteNumber']
