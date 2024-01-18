@@ -1,4 +1,4 @@
-pip install django
-pip install pandas
-pip install selenium
-pip install googlemaps
+pip3 install django
+pip3 install pandas
+pip3 install selenium
+pip3 install googlemaps
