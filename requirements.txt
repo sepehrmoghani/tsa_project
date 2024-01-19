@@ -1,4 +1,6 @@
-pip3 install django
-pip3 install pandas
-pip3 install selenium
-pip3 install googlemaps
+Django==3.0.0
+pandas==1.0.0
+selenium==3.141.0
+googlemaps==4.4.2
+PyPDF2==1.26.0
+tabula-py==2.2.0
