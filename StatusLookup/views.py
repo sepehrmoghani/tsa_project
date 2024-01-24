@@ -29,7 +29,7 @@ class UserLoginView(LoginView):
     success_url = reverse_lazy('home')  # Redirect to home after successful login
 
 class UserLogoutView(LoginRequiredMixin, LogoutView):
-    next_page = 'login'
+    next_page = reverse_lazy('login')
 
 class StatusLookupView(LoginRequiredMixin, View):
     template_name = 'status_lookup.html'

@@ -21,7 +21,7 @@ class UserLoginView(LoginView):
     success_url = reverse_lazy('home')  # Redirect to home after successful login
 
 class UserLogoutView(LoginRequiredMixin, LogoutView):
-    next_page = 'login'
+    next_page = reverse_lazy('login')
 
 class StartrackInvoiceConvertView(View):
     template_name = 'startrackconvert.html'
