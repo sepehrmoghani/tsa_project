@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Maps Distance Calculator</title>
+    <title>Home Page</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,6 +13,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            background-color: #f4f4f4;
         }
 
         nav {
@@ -21,15 +21,16 @@
             overflow: hidden;
             width: 100%;
             padding: 10px 0;
-            display: flex;
-            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         nav a {
+            float: left;
+            display: block;
             color: white;
-            text-decoration: none;
+            text-align: center;
             padding: 14px 16px;
-            margin: 0 10px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
@@ -37,68 +38,99 @@
             background-color: #555;
         }
 
-        h2 {
-            margin: 20px 0;
+        nav form {
+            float: right;
+            margin-top: 8px;
+            margin-right: 16px;
         }
 
-        p {
-            margin: 10px 0;
-        }
-
-        form {
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input[type="file"] {
-            margin-bottom: 10px;
-        }
-
-        button {
-            background-color: #417690;
+        form button {
+            background-color: #333;
             color: white;
-            padding: 10px 15px;
             border: none;
-            border-radius: 4px;
+            padding: 10px 15px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            border-radius: 3px;
         }
 
-        button:hover {
+        form button:hover {
             background-color: #555;
         }
 
-        /* To remove the border around the logout button */
-        form[style="float: right;"] button {
-            border: none;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Adjust the value to set the desired space between elements */
         }
-    </style>
-</head>
 
+        input[type="file"] {
+            display: none; /* Hide the default file input button */
+        }
+        input[type="submit"] {
+            display: none; /* Hide the default file input and submit buttons */
+        }
+
+        .custom-file-input,
+        .custom-submit-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center; /* Center the content vertically */
+            justify-content: center; /* Center the content horizontally */
+        }
+
+        .custom-file-input:hover,
+        .custom-submit-button:hover {
+            background-color: #555; /* Change the background color on hover */
+        }
+        
+        /* Style for file name display */
+        .file-name {
+            margin-left: 10px;
+        }
+
+        h1 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        p {
+            margin: 20px;
+            color: #555;
+        }
+        </style>
+</head>
 <body>
     <nav>
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'connote-compare' %}">Connote Compare</a>
         <a href="{% url 'mhpfilter' %}">MHP Filter</a>
-        <a href="{% url 'gmaps_distance' %}" style="background-color: #417690;">Google Maps Distance</a>
+        <a href="{% url 'gmaps_distance' %}" style="background-color: #555;">Google Maps Distance</a>
         <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
         <a href="{% url 'StatusLookup' %}">Status Lookup</a>
         {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}" onclick="logout()">Logout</a>
+            <form action="{% url 'logout' %}" method="post" style="float: right;">
+                {% csrf_token %}
+                <button type="submit" class="custom-submit-button">Logout</button>
+            </form>
         {% endif %}
     </nav>
 
     <h2>Google Maps Distance</h2>
     <p>Please ensure the following columns are present in your Excel file: 'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
+    
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="excel_file" id="excel_file" accept=".xlsx" required><br>
-        <button type="submit">Calculate Distances</button>
+        <label for="file1" class="custom-file-input">Choose File<input type="file" name="file1" id="file1" required></label>
+        <span class="file-name" id="file1-name"></span>
+    
+        <label for="submit" class="custom-submit-button">Upload and Process<input type="submit" id="submit" style="display:none;"></label>
     </form>
 
     {% if success_message %}
@@ -110,31 +142,14 @@
     {% endif %}
 
     <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+        // Display selected file names
+        document.getElementById('file1').addEventListener('change', function () {
+            document.getElementById('file1-name').textContent = this.files[0].name;
         });
-
-        // Dynamic background color change
-        function changeBackgroundColor() {
-            const colors = ['#FF5733', '#33FF57', '#5733FF']; // Add more colors as needed
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-            document.body.style.backgroundColor = randomColor;
-        }
-
-        // Logout function
-        function logout() {
-            // Perform logout actions here, e.g., submit a form via JavaScript
-            document.querySelector("form[style='float: right;']").submit();
-        }
+    
+        document.getElementById('file2').addEventListener('change', function () {
+            document.getElementById('file2-name').textContent = this.files[0].name;
+        });
     </script>
 </body>
-
 </html>
