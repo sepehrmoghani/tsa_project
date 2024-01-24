@@ -21,36 +21,46 @@
             overflow: hidden;
             width: 100%;
             padding: 10px 0;
+            display: flex;
+            justify-content: center;
         }
 
         nav a {
-            float: left;
-            display: block;
             color: white;
-            text-align: center;
-            padding: 14px 16px;
             text-decoration: none;
+            padding: 14px 16px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
         }
 
         nav a:hover {
             background-color: #555;
         }
 
+        h2 {
+            margin: 20px 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
         form {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
             display: flex;
             flex-direction: column;
-            align-items: left;
-            background-color: #333; /* Match the background color of the nav */
-            padding: 20px; /* Adjust padding as needed */
-            margin: 0; /* Remove margin for a cleaner look */
+            align-items: center;
         }
 
-        form label,
-        form input {
-            margin-bottom: 10px; /* Add space between label and input */
+        input[type="file"] {
+            margin-bottom: 10px;
         }
 
-        form button {
+        button {
             background-color: #417690;
             color: white;
             padding: 10px 15px;
@@ -59,7 +69,7 @@
             cursor: pointer;
         }
 
-        form button:hover {
+        button:hover {
             background-color: #555;
         }
 
@@ -79,10 +89,7 @@
         <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
         <a href="{% url 'StatusLookup' %}" style="background-color: #417690;">Status Lookup</a>
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'logout' %}" style="float: right;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        <a href="{% url 'logout' %}" onclick="logout()">Logout</a>
         {% endif %}
     </nav>
 
@@ -104,9 +111,35 @@
         <input type="checkbox" name="remember_me" id="remember_me">
         <label for="remember_me">Remember Me</label><br>
 
-    
         <button type="submit">Upload and Process</button>
     </form>
-    
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Dynamic background color change
+        function changeBackgroundColor() {
+            const colors = ['#FF5733', '#33FF57', '#5733FF']; // Add more colors as needed
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            document.body.style.backgroundColor = randomColor;
+        }
+
+        // Logout function
+        function logout() {
+            // Perform logout actions here, e.g., submit a form via JavaScript
+            document.querySelector("form[style='float: right;']").submit();
+        }
+    </script>
 </body>
+
 </html>

@@ -1,73 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Status Lookup</title>
-        <style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                min-height: 100vh;
-            }
-    
-            nav {
-                background-color: #333;
-                overflow: hidden;
-                width: 100%;
-                padding: 10px 0;
-            }
-    
-            nav a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-    
-            nav a:hover {
-                background-color: #555;
-            }
-    
-            form {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                background-color: #333; /* Match the background color of the nav */
-                padding: 20px; /* Adjust padding as needed */
-                margin: 0; /* Remove margin for a cleaner look */
-            }
-    
-            form label,
-            form input {
-                margin-bottom: 10px; /* Add space between label and input */
-            }
-    
-            form button {
-                background-color: #417690;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-    
-            form button:hover {
-                background-color: #555;
-            }
-    
-            /* To remove the border around the logout button */
-            form[style="float: right;"] button {
-                border: none;
-            }
-        </style>
-    </head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Distance Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 16px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        form {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #417690;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        /* To remove the border around the logout button */
+        form[style="float: right;"] button {
+            border: none;
+        }
+    </style>
+</head>
+
 <body>
     <nav>
         <a href="{% url 'home' %}">Home</a>
@@ -77,15 +89,12 @@
         <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
         <a href="{% url 'StatusLookup' %}">Status Lookup</a>
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'logout' %}" style="float: right;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        <a href="{% url 'logout' %}" onclick="logout()">Logout</a>
         {% endif %}
     </nav>
-    
+
     <h2>Google Maps Distance</h2>
-    <p>Please Ensure the following columns are present in your Excel file: 'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
+    <p>Please ensure the following columns are present in your Excel file: 'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="excel_file" id="excel_file" accept=".xlsx" required><br>
@@ -99,5 +108,33 @@
     {% if error_message %}
         <p class="error-message">{{ error_message }}</p>
     {% endif %}
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Dynamic background color change
+        function changeBackgroundColor() {
+            const colors = ['#FF5733', '#33FF57', '#5733FF']; // Add more colors as needed
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            document.body.style.backgroundColor = randomColor;
+        }
+
+        // Logout function
+        function logout() {
+            // Perform logout actions here, e.g., submit a form via JavaScript
+            document.querySelector("form[style='float: right;']").submit();
+        }
+    </script>
 </body>
+
 </html>

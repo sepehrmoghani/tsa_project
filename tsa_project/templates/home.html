@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,30 +21,37 @@
             overflow: hidden;
             width: 100%;
             padding: 10px 0;
+            display: flex;
+            justify-content: center;
         }
 
         nav a {
-            float: left;
-            display: block;
             color: white;
-            text-align: center;
-            padding: 14px 16px;
             text-decoration: none;
+            padding: 14px 16px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
         }
 
         nav a:hover {
             background-color: #555;
         }
 
+        h1 {
+            margin: 20px;
+        }
+
         p {
             margin: 20px;
         }
+
         /* To remove the border around the logout button */
         form[style="float: right;"] button {
             border: none;
         }
     </style>
 </head>
+
 <body>
     <nav>
         <a href="{% url 'home' %}">Home</a>
@@ -53,14 +61,38 @@
         <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
         <a href="{% url 'StatusLookup' %}">Status Lookup</a>
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'logout' %}" style="float: right;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        <a href="{% url 'logout' %}" onclick="logout()">Logout</a>
         {% endif %}
     </nav>
     <h1>Welcome to your Home Page, {{ user.first_name }}.</h1>
     <p>Choose an app from the navigation bar above.</p>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Dynamic background color change
+        function changeBackgroundColor() {
+            const colors = ['#FF5733', '#33FF57', '#5733FF']; // Add more colors as needed
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            document.body.style.backgroundColor = randomColor;
+        }
+
+        // Logout function
+        function logout() {
+            // Perform logout actions here, e.g., submit a form via JavaScript
+            document.querySelector("form[style='float: right;']").submit();
+        }
+    </script>
 </body>
 
 </html>
