@@ -36,30 +36,21 @@
             background-color: #555;
         }
 
-        h2 {
-            margin: 20px 0;
-        }
-
-        p {
-            margin: 10px 0;
-        }
-
         form {
-            margin: 20px;
-            padding: 50px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
             display: flex;
             flex-direction: column;
             align-items: left;
+            background-color: #333; /* Match the background color of the nav */
+            padding: 20px; /* Adjust padding as needed */
+            margin: 0; /* Remove margin for a cleaner look */
         }
 
-        input[type="file"] {
-            margin-bottom: 10px;
+        form label,
+        form input {
+            margin-bottom: 10px; /* Add space between label and input */
         }
 
-        button {
+        form button {
             background-color: #417690;
             color: white;
             padding: 10px 15px;
@@ -68,9 +59,10 @@
             cursor: pointer;
         }
 
-        button:hover {
+        form button:hover {
             background-color: #555;
         }
+
         /* To remove the border around the logout button */
         form[style="float: right;"] button {
             border: none;
