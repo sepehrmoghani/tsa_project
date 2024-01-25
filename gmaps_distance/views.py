@@ -1,8 +1,10 @@
 from io import BytesIO
 import pandas as pd
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
@@ -32,8 +34,10 @@ class GmapsdistanceView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
     def post(self, request):
-        if 'excel_file' in request.FILES:
-            excel_file = request.FILES['excel_file']
+        file = request.FILES['file']
+        if file.name.endswith('.xlsx'):
+            fs = FileSystemStorage()
+            excel_file = fs.save(file.name, file)
 
             try:
                 # Read the list of addresses from the uploaded Excel file
@@ -50,14 +54,21 @@ class GmapsdistanceView(LoginRequiredMixin, View):
                 response = HttpResponse(in_memory_excel.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 response['Content-Disposition'] = f'attachment; filename="postcode_distances.xlsx"'
 
+                # Display success message
+                messages.success(request, 'Distance calculation completed successfully.')
+
                 return response
 
             except Exception as e:
                 error_message = f"An error occurred: {e}"
+                # Display error message
+                messages.error(request, error_message)
                 return render(request, self.template_name, {'error_message': error_message})
 
         else:
             error_message = "Please upload an Excel file."
+            # Display error message
+            messages.error(request, error_message)
             return render(request, self.template_name, {'error_message': error_message})
 
     def calculate_distances(self, df):
@@ -101,4 +112,3 @@ class GmapsdistanceView(LoginRequiredMixin, View):
         df_final = df[final_columns]
         
         return df_final
-

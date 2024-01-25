@@ -41,31 +41,31 @@ class ConnoteCompareView(LoginRequiredMixin, View):
                 fs = FileSystemStorage()
                 filename1 = fs.save(file1.name, file1)
                 filename2 = fs.save(file2.name, file2)
+                try:
+                    # Read the Excel files
+                    df1 = pd.read_excel(filename1)
+                    df2 = pd.read_excel(filename2)
 
-                # Read the Excel files
-                df1 = pd.read_excel(filename1)
-                df2 = pd.read_excel(filename2)
+                    # Compare the 'connote' column and create a new dataframe
+                    df2['Status'] = df2.apply(
+                        lambda row: 'NEW' if row['ConnoteNumber'] not in df1['ConnoteNumber'].values else 'Already Exists',
+                        axis=1
+                    )
 
-                # Compare the 'connote' column and create a new dataframe
-                df2['Status'] = df2.apply(
-                    lambda row: 'NEW' if row['ConnoteNumber'] not in df1['ConnoteNumber'].values else 'Already Exists',
-                    axis=1
-                )
+                    # Extract the name of the first uploaded file without extension
+                    first_file_name = os.path.splitext(file1.name)[0]
 
-                # Extract the name of the first uploaded file without extension
-                first_file_name = os.path.splitext(file1.name)[0]
+                    # Create a response with the processed data
+                    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                    response['Content-Disposition'] = f'attachment; filename="{first_file_name}_ConnoteCompare.xlsx"'
 
-                # Create a response with the processed data
-                response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                response['Content-Disposition'] = f'attachment; filename="{first_file_name}_ConnoteCompare.xlsx"'
-
-                # Save the new dataframe to the response object
-                with pd.ExcelWriter(response, engine='xlsxwriter') as writer:
-                    df2.to_excel(writer, sheet_name='Sheet1', index=False)
-
-                # Delete the temporary files
-                fs.delete(filename1)
-                fs.delete(filename2)
+                    # Save the new dataframe to the response object
+                    with pd.ExcelWriter(response, engine='xlsxwriter') as writer:
+                        df2.to_excel(writer, sheet_name='Sheet1', index=False)
+                finally:
+                    # Delete the temporary files
+                    fs.delete(filename1)
+                    fs.delete(filename2)
 
                 return response
             else:

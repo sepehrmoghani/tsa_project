@@ -30,12 +30,11 @@ class StartrackInvoiceConvertView(View):
         return render(request, self.template_name)
 
     def post(self, request):
-        if 'excel_file' in request.FILES:
-            excel_file = request.FILES['excel_file']
 
-            # Save the uploaded Excel file to a temporary location using FileSystemStorage
+        file = request.FILES['file1']
+        if file.name.endswith('.xlsx'):
             fs = FileSystemStorage()
-            temp_excel_path = fs.save(excel_file.name, excel_file)
+            temp_excel_path = fs.save(file.name, file)
 
             try:
                 # Read the list of addresses from the uploaded Excel file

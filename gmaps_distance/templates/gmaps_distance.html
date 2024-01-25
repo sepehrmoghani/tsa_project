@@ -125,12 +125,18 @@
     <h2>Google Maps Distance</h2>
     <p>Please ensure the following columns are present in your Excel file: 'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
     
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="upload-form">
         {% csrf_token %}
-        <label for="file1" class="custom-file-input">Choose File<input type="file" name="file1" id="file1" required></label>
+        <label for="file" class="custom-file-input">
+            Choose File
+            <input type="file" name="file" id="file" required onchange="displayFileName(this)">
+        </label>
         <span class="file-name" id="file1-name"></span>
     
-        <label for="submit" class="custom-submit-button">Upload and Process<input type="submit" id="submit" style="display:none;"></label>
+        <label for="submit" class="custom-submit-button">
+            Upload and Process
+            <input type="submit" id="submit" style="display:none;">
+        </label>
     </form>
 
     {% if success_message %}
@@ -143,12 +149,8 @@
 
     <script>
         // Display selected file names
-        document.getElementById('file1').addEventListener('change', function () {
-            document.getElementById('file1-name').textContent = this.files[0].name;
-        });
-    
-        document.getElementById('file2').addEventListener('change', function () {
-            document.getElementById('file2-name').textContent = this.files[0].name;
+        document.getElementById('file').addEventListener('change', function () {
+            document.getElementById('file-name').textContent = this.files[0].name;
         });
     </script>
 </body>

@@ -5,9 +5,9 @@ from django.urls import reverse_lazy
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from django.http import FileResponse
-import os
 
 # Import custom functions or classes
 from mhpfilter.mhp_module import read_pdf, brittany_filter
@@ -46,19 +46,17 @@ class MHFFilterView(LoginRequiredMixin, View):
                 filtered_rows = brittany_filter(dfs, temp_pdf_path)
                 output_file_path = f"{temp_pdf_path.split('.')[0]}_filtered_MHP.xlsx"
 
-                # Delete the temporary PDF file from FileSystemStorage
-                fs.delete(temp_pdf_path)
-
-                # Save the filtered rows to the CSV file
+                # Save the filtered rows to the Excel file
                 filtered_rows.to_excel(output_file_path, index=False)
 
-                # Send the CSV file as a response for download
+                # Read the Excel file into a ContentFile
                 with open(output_file_path, 'rb') as excel_file:
-                    response = HttpResponse(excel_file.read(), content_type='text/csv')
-                    response['Content-Disposition'] = f'attachment; filename="{os.path.basename(output_file_path)}"'
+                    content = excel_file.read()
+                    content_file = ContentFile(content)
 
-                # Delete the local copy of the excel file
-                os.remove(output_file_path)
+                # Send the Excel file as a response for download using FileResponse
+                response = FileResponse(content_file, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                response['Content-Disposition'] = f'attachment; filename="{os.path.basename(output_file_path)}"'
 
                 return response
 
@@ -66,7 +64,14 @@ class MHFFilterView(LoginRequiredMixin, View):
                 error_message = f"An error occurred: {e}"
                 return render(request, self.template_name, {'error_message': error_message})
 
+            finally:
+                # Delete the temporary PDF file and the local copy of the Excel file
+                fs.delete(temp_pdf_path)
+                if os.path.exists(output_file_path):
+                    os.remove(output_file_path)
+
         return render(request, self.template_name)
+
 
 
 
