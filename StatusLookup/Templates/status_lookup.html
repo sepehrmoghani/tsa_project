@@ -113,6 +113,7 @@
         <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
         <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
         <a href="{% url 'StatusLookup' %}" style="background-color: #555;">Status Lookup</a>
+        <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
         <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
         {% if user.is_authenticated %}
             <form action="{% url 'logout' %}" method="post" style="float: right;">

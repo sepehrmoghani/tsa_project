@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('gmaps_distance.urls')),
     path('', include('StartrackConvert.urls')),
     path('', include('StatusLookup.urls')),
+    path('', include('pdf_to_excel.urls')),
 ]

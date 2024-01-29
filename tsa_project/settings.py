@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'gmaps_distance',
     'StartrackConvert',
     'StatusLookup',
+    'pdf_to_excel',
 ]
 
 MIDDLEWARE = [
