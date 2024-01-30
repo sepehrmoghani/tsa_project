@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        nav form {
+            float: right;
+            margin-top: 8px;
+            margin-right: 16px;
+        }
+
+        form button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            border-radius: 3px;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Adjust the value to set the desired space between elements */
+        }
+
+        input[type="file"] {
+            display: none; /* Hide the default file input button */
+        }
+        input[type="submit"] {
+            display: none; /* Hide the default file input and submit buttons */
+        }
+
+        .custom-file-input,
+        .custom-submit-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center; /* Center the content vertically */
+            justify-content: center; /* Center the content horizontally */
+        }
+
+        .custom-file-input:hover,
+        .custom-submit-button:hover {
+            background-color: #555; /* Change the background color on hover */
+        }
+        
+        /* Style for file name display */
+        .file-name {
+            margin-left: 10px;
+        }
+
+        h1 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        p {
+            margin: 20px;
+            color: #555;
+        }
+        </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'fileprocessor' %}">Connote Compare</a>
+        <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+        <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+        <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+        <a href="{% url 'StatusLookup' %}" style="background-color: #555; color: #bcffa7">Status Lookup</a>
+        <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
+        <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="float: right;">
+                {% csrf_token %}
+                <button type="submit" class="custom-submit-button">Logout</button>
+            </form>
+        {% endif %}
+    </nav>
+
+    <h2>Status Lookup</h2>
+    <p>Lookup Most Recent Job Status</p>
+    <p>Please ensure your Excel file contains 'ConnoteNumber' column.</p>
+
+    <form method="post" enctype="multipart/form-data" onsubmit="showMessages()" style="max-width: 600px !important; margin: auto;">
+        {% csrf_token %}
+    
+        <label for="username" style="margin-bottom: 5px;">Username:</label>
+        <input type="text" name="username" placeholder="Enter your username" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;" required>
+    
+        <label for="password" style="margin-bottom: 5px;">Password:</label>
+        <input type="password" name="password" placeholder="Enter your password" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;" required>
+    
+        <button type="submit" class="custom-submit-button" style="margin-top: 10px;">Login and Process</button>
+    
+        <input type="checkbox" name="remember_me" id="remember_me" style="margin-top: 10px;">
+        <label for="remember_me" style="color: #555;">Remember Me</label>
+    </form>
+    
+    
+    
+    <script>
+        // Display selected file names
+        document.getElementById('file1').addEventListener('change', function () {
+            document.getElementById('file1-name').textContent = this.files[0].name;
+        });
+    
+        document.getElementById('file2').addEventListener('change', function () {
+            document.getElementById('file2-name').textContent = this.files[0].name;
+        });
+    </script>
+</body>
+
+</html>

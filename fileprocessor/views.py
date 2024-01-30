@@ -26,7 +26,7 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 
 class ConnoteCompareView(LoginRequiredMixin, View):
     login_url = 'login'
-    template_name = 'connote_compare.html'  # Create an HTML template for file upload
+    template_name = 'fileprocessor.html'  # Create an HTML template for file upload
 
     def get(self, request):
         return render(request, self.template_name)

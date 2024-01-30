@@ -1,29 +1,15 @@
-"""
-URL configuration for tsa_project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 # tsa_project.urls
 from django.contrib import admin
 from django.urls import path, include
+from pdf_to_excel.views import HomePageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('fileprocessor.urls')),
-    path('', include('mhpfilter.urls')),
-    path('', include('gmaps_distance.urls')),
-    path('', include('StartrackConvert.urls')),
-    path('', include('StatusLookup.urls')),
-    path('', include('pdf_to_excel.urls')),
+    path('pdf_to_excel/', include('pdf_to_excel.urls')),
+    path('fileprocessor/', include('fileprocessor.urls')),
+    path('mhpfilter/', include('mhpfilter.urls')),
+    path('gmaps_distance/', include('gmaps_distance.urls')),
+    path('startrack_convert/', include('StartrackConvert.urls')),
+    path('status_lookup/', include('StatusLookup.urls')),
+    path('', HomePageView.as_view(), name='home'),  # Home page view
 ]

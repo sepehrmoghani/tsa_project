@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from selenium import webdriver
 from django.urls import reverse_lazy
 from django.contrib import messages
