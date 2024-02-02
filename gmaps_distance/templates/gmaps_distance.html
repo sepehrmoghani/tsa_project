@@ -141,6 +141,8 @@
         </label>
     </form>
 
+    <p id="processing-message" style="display: none;">Processing...</p>
+
     {% if success_message %}
         <p class="success-message">{{ success_message }}</p>
     {% endif %}
@@ -154,6 +156,11 @@
         document.getElementById('file').addEventListener('change', function () {
             document.getElementById('file1-name').textContent = this.files[0].name;
         });
+
+        // Show processing message when form is submitted
+        function showProcessingMessage() {
+            document.getElementById('processing-message').style.display = 'block';
+        }
     </script>
 </body>
 </html>

@@ -64,7 +64,9 @@ class GmapsdistanceView(LoginRequiredMixin, View):
                 # Display error message
                 messages.error(request, error_message)
                 return render(request, self.template_name, {'error_message': error_message})
-
+            finally:
+                fs.delete(excel_file)
+                
         else:
             error_message = "Please upload an Excel file."
             # Display error message
