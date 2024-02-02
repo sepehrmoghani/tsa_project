@@ -10,7 +10,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
+from selenium.common.exceptions import WebDriverException
 import pandas as pd
 import io
 import os
@@ -89,6 +89,14 @@ class StatusLookupView(LoginRequiredMixin, View):
             return str(e)
 
     def run_overdue_report(self, username, password, excel_file):
+        from selenium import webdriver
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.firefox.service import Service as FirefoxService
+        from selenium.webdriver.firefox.options import Options as FirefoxOptions
+        from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
         try:
             geckodriver_path = self.get_geckodriver_path()
             service = FirefoxService(executable_path=geckodriver_path)
@@ -109,8 +117,6 @@ class StatusLookupView(LoginRequiredMixin, View):
 
             # Load the Excel file with pandas
             df = pd.read_excel(excel_file)
-            total_rows = len(df)
-            completed_rows = 0
 
             # Initialize an empty list to store the statuses
             status_list = []
@@ -123,19 +129,33 @@ class StatusLookupView(LoginRequiredMixin, View):
                 consignment_number = row['ConnoteNumber']
 
                 try:
-                    # Navigate to the "track-and-trace" page with the consignment number
-                    track_and_trace_url = f"https://tsa9.iconsignit.com.au/track-and-trace/{consignment_number}"
-                    driver.get(track_and_trace_url)
+                    # Navigate to the connotes page
+                    driver.get('https://tsa9.iconsignit.com.au/admin/connotes')
 
-                    # Wait for the page to load and for the element containing the status to be present
-                    status_element = WebDriverWait(driver, 10).until(
-                        EC.presence_of_element_located((By.CSS_SELECTOR, "div.flex > span"))
-                    )
+                    # Find the input element for the consignment number search
+                    consignment_input = wait.until(EC.presence_of_element_located((By.ID, 'cu_search_0')))
+
+                    # Clear the input field and enter the consignment number
+                    consignment_input.clear()
+                    consignment_input.send_keys(consignment_number)
+
+                    # Press Enter to perform the search
+                    consignment_input.send_keys(Keys.ENTER)
+
+                    # Wait for the "view" button to be clickable
+                    view_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//a[text()="view"]')))
+
+                    # Click on the "view" button
+                    view_button.click()
+
+                    # Locate the input element
+                    tracking_status_input = driver.find_element(By.XPATH, '//input[@id="last_tracking_status"]')
+
+                    # Get the value attribute, which contains the text
+                    tracking_status = tracking_status_input.get_attribute('value')
 
                     # Add the text of the status element to the status list
-                    status_list.append(status_element.text)
-                    completed_rows += 1
-                    self.update_status(f"Processing {completed_rows} / {total_rows}")
+                    status_list.append(tracking_status)
 
                 except (NoSuchElementException, TimeoutException):
                     # If there's an error or timeout finding the element, print an empty string
