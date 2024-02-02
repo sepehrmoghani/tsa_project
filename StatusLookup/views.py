@@ -1,18 +1,20 @@
 from django.shortcuts import render
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse
 from django.views import View
-from selenium import webdriver
 from django.urls import reverse_lazy
 from django.contrib import messages
-from selenium.webdriver.common.by import By
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from django.core.files.storage import FileSystemStorage
 import pandas as pd
-import io
 import os
 
 class HomePageView(LoginRequiredMixin, View):
@@ -32,7 +34,6 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 
 class StatusLookupView(LoginRequiredMixin, View):
     template_name = 'status_lookup.html'
-    abort_flag = False  # Define abort_flag as a class variable
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,7 +44,7 @@ class StatusLookupView(LoginRequiredMixin, View):
 
     def get_geckodriver_path(self):
         # Update the Path when Uploading the code to a Server
-        return "C:/Users/Sepehr Moghani/OneDrive - Transfreight Solutions/Documents/Python/tsa_project/StatusLookup/geckodriver.exe"
+        return "/home/sepehr_sky/Python/tsa_project/StatusLookup/geckodriver"
 
     def post(self, request):
         excel_file = request.FILES.get('excel_file')
@@ -63,17 +64,13 @@ class StatusLookupView(LoginRequiredMixin, View):
         if username and password and excel_file:
             try:
                 # Run the report
-                result_bytes, output_file_name = self.run_report_threaded(username, password, excel_file)
-
-                # Serve the bytes as a downloadable response
-                response = HttpResponse(result_bytes, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                
-                # Set the content disposition with the output file name
-                response['Content-Disposition'] = f'attachment; filename="{output_file_name}"'
+                result = self.run_report_threaded(username, password, excel_file)
+                print("Result:", result)  # Add this line to print the result
+                output_file_name = result
 
                 messages.success(request, 'Process completed successfully.')  # Add a success message
 
-                return response
+                return result
 
             except WebDriverException as e:
                 # Add an error message
@@ -84,27 +81,20 @@ class StatusLookupView(LoginRequiredMixin, View):
     def run_report_threaded(self, username, password, excel_file):
         try:
             result_path = self.run_overdue_report(username, password, excel_file)
+            print("Result path:", result_path)  # Add this line to print the result_path
             return result_path
         except Exception as e:
             return str(e)
 
     def run_overdue_report(self, username, password, excel_file):
-        from selenium import webdriver
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.common.keys import Keys
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.webdriver.firefox.service import Service as FirefoxService
-        from selenium.webdriver.firefox.options import Options as FirefoxOptions
-        from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
         try:
             geckodriver_path = self.get_geckodriver_path()
             service = FirefoxService(executable_path=geckodriver_path)
 
             # Initialize the Firefox driver
-            options = webdriver.FirefoxOptions()
+            options = FirefoxOptions()
             options.headless = True
-            driver = webdriver.Firefox(options=options)
+            driver = webdriver.Firefox(service=service, options=options)
             wait = WebDriverWait(driver, 10)
 
             # Open the login page
@@ -122,10 +112,6 @@ class StatusLookupView(LoginRequiredMixin, View):
             status_list = []
 
             for index, row in df.iterrows():
-                if self.abort_flag:
-                    #messagebox.showinfo("Aborting the Operation.")
-                    break
-
                 consignment_number = row['ConnoteNumber']
 
                 try:
@@ -172,25 +158,19 @@ class StatusLookupView(LoginRequiredMixin, View):
             # Extract the original file name without extension
             file_name_without_extension, _ = os.path.splitext(excel_file.name)
 
-            # Create the output file name
-            output_file_name = f"{file_name_without_extension}_updated.xlsx"
+            # Create a response with the processed data
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="{file_name_without_extension}_StatusLookup.xlsx"'
 
-            # Export the dataframe to Excel format
-            output_buffer = io.BytesIO()
-            df.to_excel(output_buffer, index=False)
-            output_buffer.seek(0)
+            with pd.ExcelWriter(response, engine='xlsxwriter') as writer:
+                df.to_excel(writer, sheet_name='Sheet1', index=False)
 
-            return output_buffer.getvalue(), output_file_name
+            return response
 
         except WebDriverException as e:
             print(e)
         finally:
             driver.quit()
-
-    def __del__(self):
-        # Quit the driver when the object is deleted
-        if self.driver:
-            self.driver.quit()
 
     def update_status(self, message):
         messages.info(self.request, message)

@@ -67,8 +67,6 @@ class MHFFilterView(LoginRequiredMixin, View):
             finally:
                 # Delete the temporary PDF file and the local copy of the Excel file
                 fs.delete(temp_pdf_path)
-                if os.path.exists(output_file_path):
-                    os.remove(output_file_path)
 
         return render(request, self.template_name)
 

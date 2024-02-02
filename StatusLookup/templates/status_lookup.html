@@ -129,25 +129,26 @@
 
     <form method="post" enctype="multipart/form-data" onsubmit="showMessages()" style="max-width: 600px !important; margin: auto;">
         {% csrf_token %}
-    
+        
         <label for="username" style="margin-bottom: 5px;">Username:</label>
         <input type="text" name="username" placeholder="Enter your username" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;" required>
-    
+        
         <label for="password" style="margin-bottom: 5px;">Password:</label>
         <input type="password" name="password" placeholder="Enter your password" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;" required>
-    
+        
+        <label for="excel_file" class="custom-file-input">Choose File<input type="file" name="excel_file" id="excel_file" required></label>        
+        
         <button type="submit" class="custom-submit-button" style="margin-top: 10px;">Login and Process</button>
-    
+        
         <input type="checkbox" name="remember_me" id="remember_me" style="margin-top: 10px;">
         <label for="remember_me" style="color: #555;">Remember Me</label>
     </form>
     
     
-    
     <script>
         // Display selected file names
-        document.getElementById('file1').addEventListener('change', function () {
-            document.getElementById('file1-name').textContent = this.files[0].name;
+        document.getElementById('excel_file').addEventListener('change', function () {
+            document.getElementById('file-name').textContent = this.files[0].name;
         });
     
         document.getElementById('file2').addEventListener('change', function () {
