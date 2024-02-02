@@ -38,7 +38,7 @@ def rename_numeric_columns(filtered_rows):
         if col.isnumeric():
             filtered_rows.rename(columns={col: 'Total Including GST'}, inplace=True)
 
-def brittany_filter(dfs, pdf_input):
+def brittany_filter(dfs):
     filtered_rows = pd.DataFrame()
 
     for df in dfs:

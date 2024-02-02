@@ -126,14 +126,15 @@
     
     <h2>MHP Filter</h2>
     <p>Filter MHPs from TNT Statements in PDF format.</p>
+    
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="pdf_file" class="custom-file-input">Choose PDF File<input type="file" name="pdf_file" id="pdf_file" required></label>
         <span class="file-name" id="pdf-file-name"></span>
-        
-        <label for="submit" class="custom-submit-button">Upload and Process<input type="submit" id="submit" style="display:none;"></label>
-    </form>    
-
+        <button type="submit" class="custom-submit-button">Upload and Process</button>
+    </form>
+    
+      
     <script>
         // Display selected file names
         document.getElementById('pdf_file').addEventListener('change', function () {

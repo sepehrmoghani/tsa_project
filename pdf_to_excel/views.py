@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views import View
 from django.urls import reverse_lazy
 from django.http import HttpResponse
+from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -76,8 +77,12 @@ class PdfToExcelView(LoginRequiredMixin, View):
                     
                     # Prepare response with Excel file
                     with open(excel_path, 'rb') as excel_file:
-                        response = HttpResponse(excel_file.read(), content_type='application/vnd.ms-excel')
-                        response['Content-Disposition'] = 'attachment; filename=' + excel_file.name
+                        content = excel_file.read()
+                        content_file = ContentFile(content)
+
+                    response = HttpResponse(content_file.read(), content_type='application/vnd.ms-excel')
+                    response['Content-Disposition'] = 'attachment; filename=' + excel_file.name
+
                     return response
                 else:
                     return HttpResponse("No data to save.")

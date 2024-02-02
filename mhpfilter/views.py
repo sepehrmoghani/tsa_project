@@ -1,4 +1,5 @@
 import os
+import tempfile
 from django.shortcuts import render
 from django.views import View
 from django.urls import reverse_lazy
@@ -34,17 +35,19 @@ class MHFFilterView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
     def post(self, request):
-        if 'pdf_file' in request.FILES:
-            pdf_file = request.FILES['pdf_file']
+        pdf_file = request.FILES.get("pdf_file")
 
-            # Save the uploaded PDF file to a temporary location using FileSystemStorage
-            fs = FileSystemStorage()
-            temp_pdf_path = fs.save(pdf_file.name, pdf_file)
+        # Save the uploaded PDF file to a temporary location using FileSystemStorage
+        fs = FileSystemStorage()
+        temp_pdf_path = fs.save(pdf_file.name, pdf_file)
 
-            try:
-                dfs = read_pdf(temp_pdf_path)
-                filtered_rows = brittany_filter(dfs, temp_pdf_path)
-                output_file_path = f"{temp_pdf_path.split('.')[0]}_filtered_MHP.xlsx"
+        try:
+            dfs = read_pdf(temp_pdf_path)
+            filtered_rows = brittany_filter(dfs)
+
+            # Create a temporary directory to store the Excel file
+            with tempfile.TemporaryDirectory() as temp_dir:
+                output_file_path = os.path.join(temp_dir, f"{temp_pdf_path.split('.')[0]}_filtered_MHP.xlsx")
 
                 # Save the filtered rows to the Excel file
                 filtered_rows.to_excel(output_file_path, index=False)
@@ -60,15 +63,14 @@ class MHFFilterView(LoginRequiredMixin, View):
 
                 return response
 
-            except Exception as e:
-                error_message = f"An error occurred: {e}"
-                return render(request, self.template_name, {'error_message': error_message})
+        except Exception as e:
+            error_message = f"An error occurred: {e}"
+            print(error_message)
+            return render(request, self.template_name, {'error_message': error_message})
 
-            finally:
-                # Delete the temporary PDF file and the local copy of the Excel file
-                fs.delete(temp_pdf_path)
-
-        return render(request, self.template_name)
+        finally:
+            # Delete the temporary PDF file and the local copy of the Excel file
+            fs.delete(temp_pdf_path)
 
 
 
