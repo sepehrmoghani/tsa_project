@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-l$eck)e58#7$0obj3o1%dtf81-i8vv3_oz!900cw7i1^kkkbyy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#ALLOWED_HOSTS = ['badbunch.com.au', 'www.badbunch.com.au', '3.106.128.163']
 ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = 'home'
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'StartrackConvert',
     'StatusLookup',
     'pdf_to_excel',
+    'img_to_txt',
 ]
 
 MIDDLEWARE = [

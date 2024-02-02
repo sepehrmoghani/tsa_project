@@ -32,10 +32,15 @@ class PdfToExcelView(LoginRequiredMixin, View):
         try:
             pages = start_page if not multiple_page else str(start_page) + "-"
             dfs = tabula.read_pdf(input_file, pages=pages, multiple_tables=True, pandas_options={'dtype': str})
-            return dfs
+            if dfs:
+                return dfs
+            else:
+                print("No tables found in the specified page range.")
+                return None
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"An error occurred while parsing the PDF: {e}")
             return None
+
 
     def get(self, request):
         return render(request, self.template_name)
