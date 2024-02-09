@@ -34,6 +34,7 @@ class StartrackInvoiceConvertView(View):
 
     def post(self, request):
         file = request.FILES['file1']
+        print(file)
         if file.name.endswith('.xlsx'):
             fs = FileSystemStorage()
             excel_file = fs.save(file.name, file)
@@ -103,5 +104,6 @@ class StartrackInvoiceConvertView(View):
             new_row_df = pd.DataFrame(new_row)
             new_row_df = new_row_df.dropna(axis='columns', how='all')  # Ensure no all-NA columns are included
             new_df = pd.concat([new_df, new_row_df], ignore_index=True)
+
 
         return new_df
