@@ -1,12 +1,14 @@
-from django.shortcuts import render
-from django.views import View
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import reverse_lazy
 import os
 import pandas as pd
+from io import BytesIO
+from django.views import View
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomePageView(LoginRequiredMixin, View):
     login_url = 'login'  # Redirect to the login page if not logged in
@@ -24,77 +26,82 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy('login')
 
 class StartrackInvoiceConvertView(View):
+    login_url = 'login'
     template_name = 'startrackconvert.html'
 
     def get(self, request):
         return render(request, self.template_name)
 
     def post(self, request):
-
         file = request.FILES['file1']
         if file.name.endswith('.xlsx'):
             fs = FileSystemStorage()
-            temp_excel_path = fs.save(file.name, file)
+            excel_file = fs.save(file.name, file)
 
             try:
                 # Read the list of addresses from the uploaded Excel file
-                source_df = pd.read_excel(temp_excel_path)
+                addresses_df = pd.read_excel(excel_file, sheet_name='Invoice Charges')
 
-                # Initialize the new DataFrame with columns
-                new_columns = ["Date", "Reference", "Sender Reference", "Sender Name", "Sender Town", "Receiver Name",
-                               "Receiver Town", "Receiver Postcode", "Route Code", "Items", "Kg", "m3", "Fue Levy",
-                               "GST", "Nett (Ex GST & FL)", "Total Price", "Service"]
+                sorted_df = pd.DataFrame(self.process_dataframe(addresses_df))
 
-                new_df = pd.DataFrame(columns=new_columns)
+                # Save the distances DataFrame to an Excel file in-memory
+                in_memory_excel = BytesIO()
+                sorted_df.to_excel(in_memory_excel, index=False)
 
-                # Populate the new DataFrame with values from the source DataFrame
-                for index, row in source_df.iterrows():
-                    new_row = {
-                        "Date": [row["Despatch date"]],
-                        'Reference': [row['Connote/Job Number']],
-                        'Sender Reference': [row['Reference 1']],
-                        'Sender Name': [row['Senders Name']],
-                        'Sender Town': [row['Senders Location']],
-                        'Receiver Name': [row['Receiver Name 1']],
-                        'Receiver Town': [row['Receiver Location']],
-                        'Receiver Postcode': [row['Receiver Postcode']],
-                        'Items': [row['Items Connote']],
-                        'Kg': [row['Charge Weight']],
-                        'm3': [row['Cube']],
-                        'Fue Levy': [row['Fuel Surcharge'] + row['Security Surcharge']],
-                        'GST': [row['GST']],
-                        'Nett (Ex GST & FL)': [row['Cost']],
-                        'Total Price': [row['Total Charge']],
-                        'Service': [row['Service Type']]
-                    }
+                # Create an HTTP response with the Excel content
+                response = HttpResponse(in_memory_excel.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                response['Content-Disposition'] = f'attachment; filename="{os.path.splitext(file.name)[0]}_converted.xlsx"'
 
-                    new_row_df = pd.DataFrame(new_row)
-                    new_row_df = new_row_df.dropna(axis='columns', how='all')  # Ensure no all-NA columns are included
-                    new_df = pd.concat([new_df, new_row_df], ignore_index=True)
-
-                # Extract the directory path from the full Excel file path
-                directory = os.path.dirname(temp_excel_path)
-                # Extract the base name without extension for the new CSV file name
-                base_name = os.path.basename(temp_excel_path).replace('.xlsx', '')
-                new_excel_file_path = os.path.join(directory, f"{base_name}_converted.xlsx")  # Join directory with new file name
-
-                new_df.to_excel(new_excel_file_path, index=False)
-
-                # Create a response with the CSV file
-                with open(new_excel_file_path, 'rb') as excel_file:
-                    response = HttpResponse(excel_file.read(), content_type='text/csv')
-                    response['Content-Disposition'] = f'attachment; filename="{os.path.basename(new_excel_file_path)}"'
-
-                # Delete the temporary Excel and CSV files from FileSystemStorage
-                fs.delete(temp_excel_path)
-                os.remove(new_excel_file_path)
+                # Display success message
+                messages.success(request, 'Distance calculation completed successfully.')
 
                 return response
 
             except Exception as e:
                 error_message = f"An error occurred: {e}"
+                # Display error message
+                messages.error(request, error_message)
                 return render(request, self.template_name, {'error_message': error_message})
-
+            finally:
+                fs.delete(excel_file)
+                
         else:
             error_message = "Please upload an Excel file."
+            # Display error message
+            messages.error(request, error_message)
             return render(request, self.template_name, {'error_message': error_message})
+
+
+    def process_dataframe(self, source_df):
+        
+        new_columns = ["Date","Reference","Sender Reference","Sender Name","Sender Town","Sender Postcode","Receiver Name",
+                "Receiver Town","Receiver Postcode","Route Code","Items","Pallets","Kg","m3","Cubic Kg","Fue Levy","GST",
+                "Nett (Ex GST & FL)","Total Price","Description","Service"]
+
+        new_df = pd.DataFrame(columns=new_columns)
+
+        # Populate the new DataFrame with values from the source DataFrame
+        for index, row in source_df.iterrows():
+            new_row = {
+                "Date": [row["Despatch date"]],
+                'Reference': row['Connote/Job Number'],
+                'Sender Reference': row['Reference 1'],
+                'Sender Name': row['Senders Name'],
+                'Sender Town': row['Senders Location'],
+                'Receiver Name': row['Receiver Name 1'],
+                'Receiver Town': row['Receiver Location'],
+                'Receiver Postcode': row['Receiver Postcode'],
+                'Items': row['Items Connote'],
+                'Kg': row['Charge Weight'],
+                'm3': row['Cube'],
+                'Fue Levy': [row['Fuel Surcharge'] + row['Security Surcharge']],
+                'GST': row['GST'],
+                'Nett (Ex GST & FL)': row['Cost'],
+                'Total Price': row['Total Charge'],
+                'Service': row['Service Type']
+            }
+            new_row_df = pd.DataFrame(new_row)
+            new_row_df = new_row_df.dropna(axis='columns', how='all')  # Ensure no all-NA columns are included
+            new_df = pd.concat([new_df, new_row_df], ignore_index=True)
+
+        return new_df

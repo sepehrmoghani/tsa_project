@@ -130,7 +130,7 @@
     <form method="post" enctype="multipart/form-data" id="upload-form">
         {% csrf_token %}
         <label for="file" class="custom-file-input">
-            Choose File
+            Choose an Excel File
             <input type="file" name="file" id="file" required onchange="displayFileName(this)">
         </label>
         <span class="file-name" id="file1-name"></span>
@@ -140,16 +140,6 @@
             <input type="submit" id="submit" style="display:none;">
         </label>
     </form>
-
-    <p id="processing-message" style="display: none;">Processing...</p>
-
-    {% if success_message %}
-        <p class="success-message">{{ success_message }}</p>
-    {% endif %}
-
-    {% if error_message %}
-        <p class="error-message">{{ error_message }}</p>
-    {% endif %}
 
     <script>
         // Display selected file names

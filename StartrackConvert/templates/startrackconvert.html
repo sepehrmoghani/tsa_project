@@ -106,6 +106,7 @@
         }
         </style>
 </head>
+
 <body>
     <nav>
         <a href="{% url 'home' %}">Home</a>
@@ -125,26 +126,87 @@
     </nav>
 
     <h2>Startrack Invoice Convert</h2>
-    <p>Please upload a Startrack invoice</p>
+    <p>Please upload a Startrack invoice </p>
+    <p>Please ensure The desired sheet inside the Excel file is called <strong>'Invoice Charges'</strong></p>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="upload-form" onsubmit="showProcessingMessage()">
         {% csrf_token %}
-        <label for="file1" class="custom-file-input">Choose File<input type="file" name="file1" id="file1" required></label>
+        <label for="file" class="custom-file-input">
+            Choose an Excel File
+            <input type="file" name="file1" id="file" required onchange="displayFileName(this)">
+        </label>        
         <span class="file-name" id="file1-name"></span>
     
-        <label for="submit" class="custom-submit-button">Upload and Process<input type="submit" id="submit" style="display:none;"></label>
+        <!-- Remove the hidden input type="submit" and use a button instead -->
+        <button type="submit" class="custom-submit-button" id="submit">Upload and Process</button>
     </form>
+
+    <div id="processing-message" style="display: none;">Processing...</div>
+
 
     <script>
         // Display selected file names
-        document.getElementById('file1').addEventListener('change', function () {
+        document.getElementById('file').addEventListener('change', function () {
             document.getElementById('file1-name').textContent = this.files[0].name;
         });
     
-        document.getElementById('file2').addEventListener('change', function () {
-            document.getElementById('file2-name').textContent = this.files[0].name;
+        // Show processing message when form is submitted
+        function showProcessingMessage() {
+            document.getElementById('processing-message').style.display = 'block';
+        }
+    
+        // Hide processing message when response is received
+        function hideProcessingMessage() {
+            document.getElementById('processing-message').style.display = 'none';
+        }
+    
+        // Submit form asynchronously using AJAX
+        document.getElementById('upload-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+            showProcessingMessage(); // Show processing message
+    
+            var formData = new FormData(this); // Create FormData object from form
+            var xhr = new XMLHttpRequest(); // Create XMLHttpRequest object
+    
+            xhr.open('POST', this.action, true); // Configure POST request
+            xhr.responseType = 'blob'; // Set response type to blob (for file download)
+            
+            // Handle response
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var contentType = xhr.getResponseHeader('Content-Type');
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    var fileName = '';
+    
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        var fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = fileNameRegex.exec(disposition);
+                        if (matches != null && matches[1]) fileName = matches[1].replace(/['"]/g, '');
+                    }
+    
+                    // Create object URL for the blob response
+                    var blob = new Blob([xhr.response], { type: contentType });
+                    var objectUrl = window.URL.createObjectURL(blob);
+    
+                    // Create a link element to trigger the download
+                    var link = document.createElement('a');
+                    link.href = objectUrl;
+                    link.download = fileName || 'file.xlsx';
+                    document.body.appendChild(link);
+                    link.click(); // Trigger download
+                    document.body.removeChild(link);
+                    
+                    hideProcessingMessage(); // Hide processing message
+                }
+            };
+    
+            // Send form data
+            xhr.send(formData);
         });
     </script>
+    
+    
+    
 </body>
 
 </html>

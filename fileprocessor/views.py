@@ -41,6 +41,7 @@ class ConnoteCompareView(LoginRequiredMixin, View):
                 fs = FileSystemStorage()
                 filename1 = fs.save(file1.name, file1)
                 filename2 = fs.save(file2.name, file2)
+                
                 try:
                     # Read the Excel files
                     df1 = pd.read_excel(filename1)
