@@ -29,9 +29,9 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 class PdfToExcelView(LoginRequiredMixin, View):
     template_name = 'pdf_to_excel.html'
 
-    def read_pdf(self, input_file, start_page, multiple_page):
+    def read_pdf(self, input_file):
         try:
-            pages = start_page if not multiple_page else str(start_page) + "-"
+            pages = "all"
             dfs = tabula.read_pdf(input_file, pages=pages, multiple_tables=True, pandas_options={'dtype': str})
             if dfs:
                 return dfs
@@ -60,12 +60,9 @@ class PdfToExcelView(LoginRequiredMixin, View):
                 # Construct the file path
                 the_pdf = fs.path(saved_file)
                 
-                # Extract other form data
-                start_page = int(request.POST.get("start_page"))
-                multiple_page = request.POST.get("multiple_page") == "true"
 
                 # Read PDF and process data
-                dataframes = self.read_pdf(the_pdf, start_page, multiple_page)
+                dataframes = self.read_pdf(the_pdf)
 
                 if dataframes:
                     all_data = pd.concat(dataframes, ignore_index=True)
@@ -90,3 +87,6 @@ class PdfToExcelView(LoginRequiredMixin, View):
                 return HttpResponse("No file uploaded.")
         except Exception as e:
             return HttpResponse(f"An error occurred: {e}")
+        finally:
+            fs.delete(saved_file)
+            fs.delete(excel_path)

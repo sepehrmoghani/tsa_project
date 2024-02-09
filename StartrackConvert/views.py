@@ -34,7 +34,6 @@ class StartrackInvoiceConvertView(View):
 
     def post(self, request):
         file = request.FILES['file1']
-        print(file)
         if file.name.endswith('.xlsx'):
             fs = FileSystemStorage()
             excel_file = fs.save(file.name, file)

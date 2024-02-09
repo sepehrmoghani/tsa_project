@@ -120,20 +120,11 @@
 
 <h2>PDF to Excel</h2>
 <p>Convert PDF tables to Excel format.</p>
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="pdf_file" class="custom-file-input">Choose PDF File<input type="file" name="pdf_file" id="pdf_file" required></label>
     <span class="file-name" id="pdf-file-name"></span>
-    
-    <label for="start_page">Start Page:</label>
-    <input type="number" id="start_page" name="start_page" required>
-    
-    <label for="multiple_page">Are there multiple tables per page?</label>
-    <select id="multiple_page" name="multiple_page" required>
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-    </select>
-    
     <label for="submit" class="custom-submit-button">Upload and Process<input type="submit" id="submit" style="display:none;"></label>
 </form>
 
