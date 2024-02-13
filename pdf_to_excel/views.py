@@ -1,3 +1,4 @@
+import os
 import tabula
 import pandas as pd
 from django.shortcuts import render
@@ -47,39 +48,28 @@ class PdfToExcelView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
     def post(self, request):
+        uploaded_file = request.FILES.get("pdf_file")
+        fs = FileSystemStorage()
+        saved_file = None
+        excel_path = None
+        
         try:
-            # Get the uploaded file from request.FILES
-            uploaded_file = request.FILES.get("pdf_file")
-            
-            # Check if a file was uploaded
             if uploaded_file:
-                # Save the uploaded file temporarily
-                fs = FileSystemStorage()
                 saved_file = fs.save(uploaded_file.name, uploaded_file)
-
-                # Construct the file path
-                the_pdf = fs.path(saved_file)
-                
-
-                # Read PDF and process data
-                dataframes = self.read_pdf(the_pdf)
+                the_pdf_path = fs.path(saved_file)
+                excel_path = os.path.join(os.path.dirname(the_pdf_path), f"{os.path.basename(the_pdf_path).split('.')[0]}.xlsx")
+                dataframes = self.read_pdf(the_pdf_path)
 
                 if dataframes:
                     all_data = pd.concat(dataframes, ignore_index=True)
-                    excel_file = saved_file + ".xlsx"
-                    excel_path = fs.path(excel_file)
-                    
-                    # Save data to Excel
                     all_data.to_excel(excel_path, index=False)
-                    
-                    # Prepare response with Excel file
+
                     with open(excel_path, 'rb') as excel_file:
                         content = excel_file.read()
                         content_file = ContentFile(content)
 
                     response = HttpResponse(content_file.read(), content_type='application/vnd.ms-excel')
-                    response['Content-Disposition'] = 'attachment; filename=' + excel_file.name
-
+                    response['Content-Disposition'] = f'attachment; filename="{os.path.basename(excel_file.name)}"'
                     return response
                 else:
                     return HttpResponse("No data to save.")
@@ -88,5 +78,7 @@ class PdfToExcelView(LoginRequiredMixin, View):
         except Exception as e:
             return HttpResponse(f"An error occurred: {e}")
         finally:
-            fs.delete(saved_file)
-            fs.delete(excel_path)
+            if saved_file:
+                fs.delete(saved_file)
+            if excel_path:
+                fs.delete(excel_path)
