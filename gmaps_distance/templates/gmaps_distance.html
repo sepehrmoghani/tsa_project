@@ -1,159 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Maps Distance | BadBunch.com.au</title>
-    <!-- Favicon link -->
-    <link rel="icon" href="/home/ubuntu/static/favicon.ico" type="image/x-icon">
-    
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-        }
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Badbunch | Home Page</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="C:\Users\Sepehr Moghani\Downloads\tsa_project-main\tsa_project-main\static\css\styles.css" rel="stylesheet">
 
-        nav {
-            background-color: #333;
-            overflow: hidden;
-            width: 100%;
-            padding: 10px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    </head>
 
-        nav a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: #555;
-        }
-
-        nav form {
-            float: right;
-            margin-top: 8px;
-            margin-right: 16px;
-        }
-
-        form button {
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 16px;
-            border-radius: 3px;
-        }
-
-        form button:hover {
-            background-color: #555;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* Adjust the value to set the desired space between elements */
-        }
-
-        input[type="file"] {
-            display: none; /* Hide the default file input button */
-        }
-        input[type="submit"] {
-            display: none; /* Hide the default file input and submit buttons */
-        }
-
-        .custom-file-input,
-        .custom-submit-button {
-            background-color: #333;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: flex;
-            align-items: center; /* Center the content vertically */
-            justify-content: center; /* Center the content horizontally */
-        }
-
-        .custom-file-input:hover,
-        .custom-submit-button:hover {
-            background-color: #555; /* Change the background color on hover */
-        }
-        
-        /* Style for file name display */
-        .file-name {
-            margin-left: 10px;
-        }
-
-        h1 {
-            margin-top: 30px;
-            color: #333;
-        }
-
-        p {
-            margin: 20px;
-            color: #555;
-        }
-        </style>
-</head>
-<body>
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'fileprocessor' %}">Connote Compare</a>
-        <a href="{% url 'mhpfilter' %}">MHP Filter</a>
-        <a href="{% url 'gmaps_distance' %}" style="background-color: #555; color:#f5ff97">Google Maps Distance</a>
-        <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
-        <a href="{% url 'StatusLookup' %}">Status Lookup</a>
-        <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
-        <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
-        {% if user.is_authenticated %}
-            <form action="{% url 'logout' %}" method="post" style="float: right;">
-                {% csrf_token %}
-                <button type="submit" class="custom-submit-button">Logout</button>
-            </form>
-        {% endif %}
-    </nav>
-
-    <h2>Google Maps Distance</h2>
-    <p>Please ensure the following columns are present in your Excel file: 'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
-    
-    <form method="post" enctype="multipart/form-data" id="upload-form">
-        {% csrf_token %}
-        <label for="file" class="custom-file-input">
-            Choose an Excel File
-            <input type="file" name="file" id="file" required onchange="displayFileName(this)">
-        </label>
-        <span class="file-name" id="file1-name"></span>
-    
-        <label for="submit" class="custom-submit-button">
-            Upload and Process
-            <input type="submit" id="submit" style="display:none;">
-        </label>
-    </form>
-
-    <script>
-        // Display selected file names
-        document.getElementById('file').addEventListener('change', function () {
-            document.getElementById('file1-name').textContent = this.files[0].name;
-        });
-
-        // Show processing message when form is submitted
-        function showProcessingMessage() {
-            document.getElementById('processing-message').style.display = 'block';
-        }
-    </script>
-</body>
+    <header>
+        <div id="mobile-menu-close">
+            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <ul id="menu" class="shadow">
+            <li>
+                <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li>
+                <a href="{% url 'fileprocessor' %}">Connote Compare</a>
+            </li>
+            <li>
+                <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+            </li>
+            <li>
+                <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+            </li>
+            <li>
+                <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+            </li>
+            <li>
+                <a href="{% url 'StatusLookup' %}">Status Lookup</a>
+            </li>
+            <li>
+                <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
+            </li>
+            <li>
+                <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </header>
+    <body>
+        <div id="analysis-report" class="grid-container">
+            <h3 class="heading-fixed">Google Maps Distance</h3>
+            <p>Ensure the following columns are present in your Excel file:<br><br>'SLocality', 'SState', 'SPCode', 'RLocality', 'RState', 'RPCode'</p>
+            <div id="analysis-report-form" class="grid-item">
+                <form method="POST" action="https://formspree.io/f/xoqzvqok">
+                    <input type="hidden" name="_subject" value="Contact request from transfreight.com.au" />
+                    
+                    <!-- File Input 1 -->
+                    <label for="file1" class="file-upload-label grid-item">Choose an Excel File</label>
+                    <input type="file" name="file1" id="file1" accept="image/*, .pdf, .doc, .docx" class="file-upload grid-item">
+                    
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </body>    
 </html>
