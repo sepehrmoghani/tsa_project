@@ -15,43 +15,53 @@
         <link href="C:\Users\Sepehr Moghani\Downloads\tsa_project-main\tsa_project-main\static\css\styles.css" rel="stylesheet">
 
     </head>
+
+    <header>
+        <div id="mobile-menu-close">
+            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <ul id="menu" class="shadow">
+            <li>
+                <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li>
+                <a href="{% url 'fileprocessor' %}">Connote Compare</a>
+            </li>
+            <li>
+                <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+            </li>
+            <li>
+                <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+            </li>
+            <li>
+                <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+            </li>
+            <li>
+                <a href="{% url 'StatusLookup' %}">Status Lookup</a>
+            </li>
+            <li>
+                <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
+            </li>
+            <li>
+                <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </header>
+    
     
     <body>
         <div id="mobile-menu-open" class="shadow-large">
             <i class="fa fa-bars" aria-hidden="true"></i>
         </div>
         <!-- End #mobile-menu-toggle -->
-        <header>
-            <div id="mobile-menu-close">
-                <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
-            </div>
-            <ul id="menu" class="shadow">
-                <li>
-                    <a href="{% url 'home' %}">Home</a>
-                </li>
-                <li>
-                    <a href="{% url 'fileprocessor' %}">Connote Compare</a>
-                </li>
-                <li>
-                    <a href="{% url 'mhpfilter' %}">MHP Filter</a>
-                </li>
-                <li>
-                    <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
-                </li>
-                <li>
-                    <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
-                </li>
-            <li>
-            <a href="{% url 'StatusLookup' %}">Status Lookup</a>
-                </li>
-            <li>
-                    <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
-                </li>
-            <li>
-                    <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
-                </li>
-            </ul>
-        </header>
         
         <div id="about">
             <div class="row">
