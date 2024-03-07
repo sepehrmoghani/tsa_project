@@ -22,7 +22,9 @@
         </div>
         <ul id="menu" class="shadow">
             <li>
-                <a href="{% url 'admin:index' %}">Admin</a>
+                <form method="GET" action="{% url 'admin:index' %}">
+                    <button type="submit">Admin</button>
+                </form>
             </li>
         </ul>
     </header>    
