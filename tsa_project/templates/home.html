@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Badbunch | Home Page</title>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-</head>
-<body>
-    <div id="mobile-menu-open" class="shadow-large">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <!-- End #mobile-menu-toggle -->
-    <header>
-        <div id="mobile-menu-close">
-            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Badbunch | Home Page</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="C:\Users\Sepehr Moghani\Downloads\tsa_project-main\tsa_project-main\static\css\styles.css" rel="stylesheet">
+
+    </head>
+    
+    <body>
+        <div id="mobile-menu-open" class="shadow-large">
+            <i class="fa fa-bars" aria-hidden="true"></i>
         </div>
-        <ul id="menu" class="shadow">
+        <!-- End #mobile-menu-toggle -->
+        <header>
+            <div id="mobile-menu-close">
+                <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <ul id="menu" class="shadow">
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'fileprocessor' %}">Connote Compare</a>
+                </li>
+                <li>
+                    <a href="{% url 'mhpfilter' %}">MHP Filter</a>
+                </li>
+                <li>
+                    <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
+                </li>
+                <li>
+                    <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
+                </li>
             <li>
-                <a href="{% url 'home' %}">Home</a>
-            </li>
+            <a href="{% url 'StatusLookup' %}">Status Lookup</a>
+                </li>
             <li>
-                <a href="{% url 'fileprocessor' %}">Connote Compare</a>
-            </li>
+                    <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
+                </li>
             <li>
-                <a href="{% url 'mhpfilter' %}">MHP Filter</a>
-            </li>
-            <li>
-                <a href="{% url 'gmaps_distance' %}">Google Maps Distance</a>
-            </li>
-            <li>
-                <a href="{% url 'StartrackConvert' %}">Startrack Invoice Convert</a>
-            </li>
-		<li>
-		<a href="{% url 'StatusLookup' %}">Status Lookup</a>
-            </li>
-		<li>
-                <a href="{% url 'pdf_to_excel' %}">PDF to Excel</a>
-            </li>
-		<li>
-                <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
-            </li>
-        </ul>
-    </header>
-</body>
+                    <a href="https://tsa9.iconsignit.com.au/admin" target="_blank">iconsignit</a>
+                </li>
+            </ul>
+        </header>
+
+        <div class="centered-content">
+            <h1>Welcome to your Home Page, {{ user.first_name }}</h1>
+            <p>Choose an app from the navigation bar above</p>
+        </div>
+        
+    </body>
 </html>
