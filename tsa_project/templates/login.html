@@ -23,13 +23,14 @@
         <!-- End #mobile-menu-toggle -->
 <body>
     <a href="{% url 'admin:index' %}" class="admin-button">Admin</a>
-
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <p>To create a new user, please contact TSA's IT Department</p>
+    <div id="login">
+        <h3 class="heading-fixed">Login</h3>
+        <form method="POST" action="https://formspree.io/f/xoqzvqok">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+        <p>To create a new user, please contact TSA's IT Department</p>
+    </div>
 </body>
 </html>
