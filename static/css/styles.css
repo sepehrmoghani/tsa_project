@@ -1,8 +1,8 @@
 body {
     font-family: 'Helvetica';
     font-size: 18px;
-    background-color: #000000;
-    color: #fff000
+    background-color: #ffffff;
+    color: #000000
 }
 
 body.active {
@@ -12,7 +12,7 @@ body.active {
 
 .centered-content {
     text-align: center;
-    color: #fff000;
+    color: #000000;
     font-weight: bold;
     font-size: 30px;
 
@@ -50,12 +50,12 @@ header {
     animation-timing-function: ease;
     animation-duration: 1s;*/
     width: 100%;
-    background: #fff000
+    background: #000000
 }
 
 header ul {
     display: inline-block;
-    /*background: #000000;*/
+    /*background: #ffffff;*/
     text-align: center;
     padding: 10px;
     margin: 0;
@@ -69,20 +69,20 @@ header li {
 
 header a {
     display: block;
-    color: #000000;
+    color: #ffffff;
     padding: 10px
 }
 
 header a:hover{
-    background-color: #000000;
-    color: #fff000;
+    background-color: #ffffff;
+    color: #000000;
     text-decoration: none;
     border-radius: 2px;
 }
 
 header a:focus {
-    color: #fff000;
-    background: #000000;
+    color: #000000;
+    background: #ffffff;
     text-decoration: none;
     border-radius: 4px;
 }
@@ -96,6 +96,13 @@ header.sticky {
     z-index: 999
 }
 
+.left-align-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
 #menu.active {
     display: block
 }
@@ -106,24 +113,43 @@ header.sticky {
     position: fixed;
     right: 15px;
     top: 10px;
-    color: #fff000;
+    color: #000000;
     font-size: 1.5em;
     z-index: 20;
     padding: 0 7px;
     border-radius: 4px;
-    background: #000000
+    background: #ffffff
+}
+
+#menu form button {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 10px 5px;
+    border: none;
+    color: #000000;
+    font-weight: 700;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    transition: .5s ease all;
+}
+
+#menu form button:hover {
+    box-shadow: 0 10px 20px 000(0, 0, 0, 0.19), 0 6px 6px ffffff(0, 0, 0, 0.23);
+    background-color: #000000;
+    color: #ffffff;
 }
 
 #mobile-menu-close {
     display: none;
     text-align: right;
     width: 100%;
-    background: #000000;
+    background: #ffffff;
     font-size: 1.5em;
     padding-right: 15px;
     padding-top: 10px;
     cursor: pointer;
-    color: #fff000
+    color: #000000
 }
 
 #mobile-menu-close span {
@@ -146,7 +172,7 @@ footer {
 
 .copyright p {
     margin: 0;
-    color: #fff000;
+    color: #000000;
     font-size: 10px
 }
 
@@ -161,12 +187,12 @@ footer {
     width: 35px;
     height: 35px;
     /*border-radius: 50%;
-    border: 3px solid #fff000;*/
+    border: 3px solid #000000;*/
     text-align: center
 }
 
 .top i {
-    color: #fff000
+    color: #000000
 }
 
 .social {
@@ -186,29 +212,29 @@ footer {
 
 .social a {
     display: block;
-    color: #fff000;
+    color: #000000;
     padding: 10px
 }
 
 .social a:hover {
-    background-color: #fff000;
-    color: #000000;
+    background-color: #000000;
+    color: #ffffff;
     border-radius: 25px;
 }
 
 .btn-rounded-white {
     display: inline-block;
-    color: #000000;
+    color: #ffffff;
     padding: 20px 50px;
-    border: 3px solid #000000;
+    border: 3px solid #ffffff;
     border-radius: 3px;
     transition: .5s ease all;
     font-size: 1.1em;
 }
 
 .btn-rounded-white:hover {
-    background-color: #000000;
-    color: #fff000;
+    background-color: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-size: 1.1em;
 }
@@ -217,7 +243,7 @@ footer {
     font-size: 30px;
     font-weight: 400;
     margin: 0 0 30px 0;
-    color: #fff000;
+    color: #000000;
     margin-bottom: -5px;
     padding-bottom: -5px;
     font-weight: bold;
@@ -239,7 +265,7 @@ footer {
     margin: 0 auto;
     font-weight: bold;
     text-align: center;
-    /*background: #000000*/
+    /*background: #ffffff*/
 }
 
 #lead {
@@ -254,7 +280,7 @@ footer {
 }
 
 #lead-content {
-    color: #000000;
+    color: #ffffff;
     position: absolute;
     z-index: 10;
     top: 50%; /* Adjust the Button location */
@@ -269,7 +295,7 @@ footer {
 }
 
 #lead-content h1 {
-    color: #000000;
+    color: #ffffff;
     font-weight: 900;
     font-size: 3em;
     text-transform: uppercase;
@@ -278,7 +304,7 @@ footer {
 }
 
 #lead-content h2 {
-    color: #000000;
+    color: #ffffff;
     font-weight: 500;
     font-size: 2em;
     margin-bottom: 15px
@@ -309,7 +335,7 @@ footer {
     text-align: center;
     z-index: 10;
     bottom: 15px;
-    color: #000000
+    color: #ffffff
 }
 
 #lead-down span {
@@ -319,7 +345,7 @@ footer {
     width: 35px;
     height: 35px;
     /*border-radius: 50%;
-    border: 3px solid #fff000;*/
+    border: 3px solid #000000;*/
     text-align: center
 }
 
@@ -347,29 +373,29 @@ footer {
     padding: 200px 50px;
     width: 100%;
     /*box-sizing: border-box;
-    border-bottom: 1px solid #fff000;*/
+    border-bottom: 1px solid #000000;*/
 }
 
 #about h2 {
-    color: #fff000
+    color: #000000
 }
 
 #about p {
     text-align: center;
-    color: #fff000;
+    color: #000000;
     font-size: 20px;
 }
 
 
 /* Hide the dropdown content by default */
 .dropdown-content {
-    color: #fff000;
+    color: #000000;
     display: none;
     position: absolute;
-    background-color: #000000;
+    background-color: #ffffff;
     min-width: 200px;
     padding: 10px;
-    border: 1px solid #000000;
+    border: 1px solid #ffffff;
     border-radius: 5px;
     z-index: 1;
     transition: 1s ease all;
@@ -395,7 +421,7 @@ footer {
 
 .box {
     padding: 20px;
-    /*border: 1px solid #fff000;*/
+    /*border: 1px solid #000000;*/
     box-sizing: border-box;
 }
 
@@ -406,7 +432,7 @@ footer {
 }
 
 #experience h2 {
-    color: #fff000
+    color: #000000
 }
 
 #experience p {
@@ -428,7 +454,7 @@ footer {
     right: auto;
     height: 100%;
     width: 3px;
-    background: #000000;
+    background: #ffffff;
     z-index: 0
 }
 
@@ -437,16 +463,16 @@ footer {
     content: '';
     width: 3px;
     height: 40px;
-    background: #000000;
-    background: linear-gradient(to bottom, #000000, rgba(52, 152, 219, 0));
+    background: #ffffff;
+    background: linear-gradient(to bottom, #ffffff, rgba(52, 152, 219, 0));
     top: 100%;
     left: 303px
 }
 
 .vtimeline-content {
     margin-left: 350px;
-    background: #000000;
-    /*border: 1px solid #fff000;
+    background: #ffffff;
+    /*border: 1px solid #000000;
     border-radius: 3px;*/
     padding: 15px;
     text-align: left
@@ -455,7 +481,7 @@ footer {
 .vtimeline-content h3 {
     font-size: 1.5em;
     font-weight: 300;
-    color: #fff000;
+    color: #000000;
     display: inline-block;
     margin: 0
 }
@@ -463,12 +489,12 @@ footer {
 .vtimeline-content h4 {
     font-size: 1.2em;
     font-weight: 300;
-    color: #fff000;
+    color: #000000;
     margin: 0 0 15px 0
 }
 
 .vtimeline-content p {
-    color: #fff000;
+    color: #000000;
     font-size: 0.9em;
     margin: 0
 }
@@ -481,10 +507,10 @@ footer {
 
 .vtimeline-icon {
     position: relative;
-    color: #fff000;
+    color: #000000;
     width: 50px;
     height: 50px;
-    background: #000000;
+    background: #ffffff;
     /*border-radius: 50%;*/
     float: left;
     z-index: 99;
@@ -504,7 +530,7 @@ footer {
     left: 0;
     top: 10px;
     font-weight: 300;
-    color: #fff000
+    color: #000000
 }
 
 #testimonials {
@@ -527,7 +553,7 @@ footer {
     animation: rotateTestimonials 30s linear infinite;
     transition: all 0.5s ease;
     padding: 15px;
-    background-color: #000000;
+    background-color: #ffffff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -547,22 +573,22 @@ footer {
 /* Adjust the size and color of the text */
 #testimonials p {
     font-size: 20px; /* Adjust the font size as needed */
-    color: #fff000; /* Adjust the color as needed */
+    color: #000000; /* Adjust the color as needed */
 }
 
 #testimonials h2 {
     font-size: 30px;
-    color: #fff000
+    color: #000000
 }
 
 #projects {
     padding: 50px 15px;
-    /*border-bottom: 1px solid #000000;*/
+    /*border-bottom: 1px solid #ffffff;*/
     text-align: center
 }
 
 #projects h2 {
-    color: #fff000;
+    color: #000000;
     margin-bottom: 50px
 }
 
@@ -571,7 +597,7 @@ footer {
     max-width: 900px;
     margin: 0 auto 30px auto;
     overflow: hidden;
-    background: #fff000;
+    background: #000000;
     /*border-radius: 4px*/
 }
 
@@ -590,12 +616,12 @@ footer {
 .project-info h3 {
     font-size: 1.5em;
     font-weight: 300;
-    color: #fff000;
+    color: #000000;
     margin: 0 0 15px 0
 }
 
 .project-info p {
-    color: #fff000;
+    color: #000000;
     margin: 0 0 15px 0;
     font-size: 0.9em
 }
@@ -617,7 +643,7 @@ footer {
 }
 
 #skills h2 {
-    color: #fff000;
+    color: #000000;
     margin-bottom: 50px
 }
 
@@ -632,8 +658,8 @@ footer {
     display: inline-block;
     margin: 7px;
     padding: 5px 10px;
-    color: #fff000;
-    background: #000000;
+    color: #000000;
+    background: #ffffff;
     list-style: none;
     cursor: default;
     font-size: 1.2em
@@ -669,7 +695,7 @@ footer {
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: #fff000;
+    background-color: #000000;
 }
 
 .radiomark {
@@ -678,7 +704,7 @@ footer {
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: #fff000;
+    background-color: #000000;
     border-radius: 50%;
 }
 
@@ -737,7 +763,7 @@ footer {
 
 #analysis-report {
     padding: 100px 15px;
-    background: #000000;
+    background: #ffffff;
     text-align: left
 
 }
@@ -748,18 +774,18 @@ footer {
     padding: 15px;
     border: none;
     margin-bottom: 15px;
-    background-color: #000000;
+    background-color: #ffffff;
     transition: .5s ease all;
     font-weight: normal;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    color: #fff000;
+    color: #000000;
     text-align: Left;
     cursor: pointer;
 }
 
 #analysis-report-form .file-upload-label:hover {
-    background-color: #fff000;
-    color: #000000;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 #analysis-report-form input[type="file"] {
@@ -778,13 +804,13 @@ footer {
 
 #analysis-report h2 {
     margin: 0 0 15px 0;
-    color: #fff000;
+    color: #000000;
     font-weight: 500
 }
 
 #analysis-report p {
     font-size: 1.2em;
-    color: #fff000;
+    color: #000000;
     font-weight: 500
 }
 
@@ -800,11 +826,11 @@ footer {
     padding: 15px;
     border: none;
     margin-bottom: 15px;
-    background-color: #000000;
+    background-color: #ffffff;
     transition: .5s ease all;
     font-weight: normal;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    color: #fff000;
+    color: #000000;
 }
 
 /* Remove box shadow from radios and checkboxes */
@@ -815,30 +841,30 @@ footer {
 
 #analysis-report-form input::-webkit-input-placeholder,
 #analysis-report-form textarea::-webkit-input-placeholder {
-    color: #fff0003a
+    color: #0000003a
 }
 
 #analysis-report-form input:-moz-placeholder,
 #analysis-report-form textarea:-moz-placeholder {
-    color: #fff0003a;
+    color: #0000003a;
     opacity: 1
 }
 
 #analysis-report-form input::-moz-placeholder,
 #analysis-report-form textarea::-moz-placeholder {
-    color: #fff0003a;
+    color: #0000003a;
     opacity: 1
 }
 
 #analysis-report-form input:-ms-input-placeholder,
 #analysis-report-form textarea:-ms-input-placeholder {
-    color: #fff0003a
+    color: #0000003a
 }
 
 #analysis-report-form input:focus,
 #analysis-report-form textarea:focus {
     outline: none;
-    background: #000000
+    background: #ffffff
 }
 
 #analysis-report-form textarea {
@@ -849,25 +875,25 @@ footer {
 #analysis-report-form button {
     display: block;
     width: 20%;
-    background: #000000;
+    background: #ffffff;
     border-radius: 4px;
     padding: 10px 5px;
     border: none;
-    color: #fff000;
+    color: #000000;
     font-weight: 700;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     transition: .5s ease all
 }
 
 #analysis-report-form button:hover {
-    box-shadow: 0 10px 20px 000(0, 0, 0, 0.19), 0 6px 6px 000000(0, 0, 0, 0.23);
-    background-color: #fff000;
-    color: #000000;
+    box-shadow: 0 10px 20px 000(0, 0, 0, 0.19), 0 6px 6px ffffff(0, 0, 0, 0.23);
+    background-color: #000000;
+    color: #ffffff;
 }
 
 #contact {
     padding: 50px 15px;
-    background: #000000;
+    background: #ffffff;
     text-align: center
 
 }
@@ -902,7 +928,7 @@ footer {
 
 #contact h2 {
     margin: 0 0 15px 0;
-    color: #fff000;
+    color: #000000;
     font-weight: 500
 }
 
@@ -917,16 +943,16 @@ footer {
     padding: 15px;
     border: none;
     margin-bottom: 15px;
-    background-color: #000000;
+    background-color: #ffffff;
     transition: .5s ease all;
     font-weight: normal;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    color: #fff000;
+    color: #000000;
 }
 
 #contact-form select:focus {
     outline: none;
-    background-color: #000000; /* Change background color on focus */
+    background-color: #ffffff; /* Change background color on focus */
 }
 
 #contact-form input,
@@ -936,39 +962,39 @@ footer {
     padding: 15px;
     border: none;
     margin-bottom: 15px;
-    background-color: #000000;
+    background-color: #ffffff;
     transition: .5s ease all;
     font-weight: normal;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    color: #fff000
+    color: #000000
 }
 
 #contact-form input::-webkit-input-placeholder,
 #contact-form textarea::-webkit-input-placeholder {
-    color: #fff0003a
+    color: #0000003a
 }
 
 #contact-form input:-moz-placeholder,
 #contact-form textarea:-moz-placeholder {
-    color: #fff0003a;
+    color: #0000003a;
     opacity: 1
 }
 
 #contact-form input::-moz-placeholder,
 #contact-form textarea::-moz-placeholder {
-    color: #fff0003a;
+    color: #0000003a;
     opacity: 1
 }
 
 #contact-form input:-ms-input-placeholder,
 #contact-form textarea:-ms-input-placeholder {
-    color: #fff0003a
+    color: #0000003a
 }
 
 #contact-form input:focus,
 #contact-form textarea:focus {
     outline: none;
-    background: #000000
+    background: #ffffff
 }
 
 #contact-form textarea {
@@ -979,49 +1005,49 @@ footer {
 #contact-form button {
     display: block;
     width: 20%;
-    background: #000000;
+    background: #ffffff;
     border-radius: 4px;
     padding: 10px 5px;
     border: none;
-    color: #fff000;
+    color: #000000;
     font-weight: 700;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     transition: .5s ease all
 }
 
 #contact-form button:hover {
-    box-shadow: 0 10px 20px 000(0, 0, 0, 0.19), 0 6px 6px 000000(0, 0, 0, 0.23);
-    background-color: #fff000;
-    color: #000000;
+    box-shadow: 0 10px 20px 000(0, 0, 0, 0.19), 0 6px 6px ffffff(0, 0, 0, 0.23);
+    background-color: #000000;
+    color: #ffffff;
 }
 
 .optional-section {
     padding: 50px 15px;
     text-align: center;
-    /*border-top: 1px solid #fff000*/
+    /*border-top: 1px solid #000000*/
 }
 
 .optional-section h2 {
-    color: #fff000
+    color: #000000
 }
 
 .optional-section-block {
     max-width: 700px;
     margin: 0 auto 30px auto;
     padding: 15px;
-    /*border: 1px solid #fff000;*/
-    background: #000000;
+    /*border: 1px solid #000000;*/
+    background: #ffffff;
     text-align: left
 }
 
 .optional-section-block h3 {
     font-weight: 500;
     margin: 0 0 15px 0;
-    color: #fff000
+    color: #000000
 }
 
 .optional-section-block h4 {
-    color: #fff000;
+    color: #000000;
     clear: both;
     font-weight: 500;
     margin: 0 0 15px 0
@@ -1030,7 +1056,7 @@ footer {
 .optional-section-block p,
 .optional-section-block ul {
     margin: 0 0 15px 0;
-    color: #fff000;
+    color: #000000;
     font-size: 0.9em
 }
 
@@ -1072,7 +1098,7 @@ footer {
     }
 
     #lead-content {
-        color: #000000;
+        color: #ffffff;
         position: relative;
         transform: none;
         left: auto;
@@ -1133,7 +1159,7 @@ footer {
     }
 
     #lead-content a {
-        color: #000000;
+        color: #ffffff;
         padding: 10px 20px;
     }
 
@@ -1177,7 +1203,7 @@ footer {
     }
 
     #lead-content a {
-        color: #000000;
+        color: #ffffff;
         font-size: 0.9em;
         padding: 5px 10px;
         margin-left: 100px 
