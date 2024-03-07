@@ -52,7 +52,18 @@
                 </li>
             </ul>
         </header>
-        <h1 class="heading-fixed">Welcome to your Home Page, {{ user.first_name }}</h1>
-        <p>Choose an app from the navigation bar above</p>
+        
+        <div id="about">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 class="heading-fixed">Welcome to your Home Page, {{ user.first_name }}</h3><br>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                        Choose an app from the navigation bar above<br>
+                    </p>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
